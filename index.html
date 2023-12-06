@@ -1,30 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Communication API</title>
+    <title>Test Azure Function</title>
 </head>
 <body>
-    <h1>Communication avec l'API</h1>
-    <button onclick="callAPI()">Appeler l'API</button>
-    <p id="apiResponse"></p>
+    <h1>Test Azure Function</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button onclick="callAzureFunction()">Call Azure Function</button>
+    <p id="result"></p>
 
     <script>
-        function callAPI() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/api", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        document.getElementById("apiResponse").innerText = xhr.responseText;
-                    } else {
-                        document.getElementById("apiResponse").innerText = "Erreur lors de l'appel de l'API.";
-                    }
-                }
-            };
-            xhr.send();
+        async function callAzureFunction() {
+            const name = document.getElementById('nameInput').value;
+            const response = await fetch('/api/azureproject?name=' + encodeURIComponent(name));
+            const data = await response.text();
+            document.getElementById('result').innerText = data;
         }
     </script>
 </body>
 </html>
-
 

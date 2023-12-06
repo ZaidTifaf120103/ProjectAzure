@@ -1,10 +1,24 @@
-from flask import Flask
+import logging
+from flask import app
+import azure.functions as func
 
-app = Flask(__name__)
+@app.route(route="azureproject", auth_level=func.AuthLevel.undefined)
+def azureproject(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.')
 
-@app.route('/api')
-def api():
-    return 'Hi, I\'m the API!'
+    name = req.params.get('name')
+    if not name:
+        try:
+            req_body = req.get_json()
+        except ValueError:
+            pass
+        else:
+            name = req_body.get('name')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    if name:
+        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
+    else:
+        return func.HttpResponse(
+             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+             status_code=200
+        )
