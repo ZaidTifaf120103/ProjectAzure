@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, World!</title>
-    <br>
-   
+    <title>Communication API</title>
 </head>
 <body>
+    <h1>Communication avec l'API</h1>
+    <button onclick="callAPI()">Appeler l'API</button>
+    <p id="apiResponse"></p>
 
-    <h1>Hello, World!</h1>
- 
+    <script>
+        function callAPI() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        document.getElementById("apiResponse").innerText = xhr.responseText;
+                    } else {
+                        document.getElementById("apiResponse").innerText = "Erreur lors de l'appel de l'API.";
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
 </body>
 </html>
 
