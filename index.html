@@ -10,20 +10,22 @@
 
     <script>
         function callAPI() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/api", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        document.getElementById("apiResponse").innerText = xhr.responseText;
-                    } else {
-                        document.getElementById("apiResponse").innerText = "Erreur lors de l'appel de l'API.";
+            fetch('/api')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur lors de l\'appel de l\'API.');
                     }
-                }
-            };
-            xhr.send();
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById("apiResponse").innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById("apiResponse").innerText = error.message;
+                });
         }
     </script>
+    
 </body>
 </html>
 
